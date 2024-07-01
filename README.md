@@ -1,0 +1,2 @@
+# playwright_typescript_boilerplate
+Playwright, Typescript boilerplate project structure
