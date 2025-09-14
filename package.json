@@ -22,11 +22,17 @@
     "test": "npx playwright test",
     "test-headed": "npx playwright test --headed",
     "test-ui": "npx playwright test --ui",
-    "test-report": "npx playwright show-report"
+    "test-report": "npx playwright show-report",
+    "test-chromium": "npx playwright test --project=chromium",
+    "test-smoke": "npx playwright test --grep tests/smoke",
+    "test-dev": "BASE_URL=http://localhost:4200 npx playwright test",
+    "test-cucumber": "cucumber-js"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^12.2.0",
     "@playwright/test": "^1.55.0",
-    "@types/node": "^24.3.1"
+    "@types/node": "^24.3.1",
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "dotenv": "^17.2.2"

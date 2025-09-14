@@ -1,0 +1,47 @@
+{
+  "cookies": [
+    {
+      "name": "cf_clearance",
+      "value": "QEBL6s6wOR5F_bH5uXK4aPnOGT7ffd7aEeECyvW4MJA-1757657391-1.2.1.1-zlPYus4bhiW5qYr13stcA7XhcKAwM3UI59.mxOm62X1A5ZIqt2_s2TnLmXEEnVxtxiCRRfgunJY.f5e_D08dBv4CMtaRMwp0QYTFXgdB_klXIqnSutCZIDR8TCMQT29Gz5LsfO52gw2v3BwGt02KYdLYMVqxtsm5F4.rmLR_vs5l3K49GsZ2IwFQbZnBVtVgaPYQ1aab7y72rUfKXy6eCvbqWTo7Ck35QJtxEjipP4g",
+      "domain": ".practicesoftwaretesting.com",
+      "path": "/",
+      "expires": 1789193391.727346,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://practicesoftwaretesting.com",
+      "_crHasCrossSiteAncestor": false
+    },
+    {
+      "name": "_ga",
+      "value": "GA1.1.1637330380.1757657392",
+      "domain": ".practicesoftwaretesting.com",
+      "path": "/",
+      "expires": 1792217394.228101,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_ga_0BJFXRKTYC",
+      "value": "GS2.1.s1757657391$o1$g1$t1757657394$j57$l0$h0",
+      "domain": ".practicesoftwaretesting.com",
+      "path": "/",
+      "expires": 1792217394.269058,
+      "httpOnly": false,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://practicesoftwaretesting.com",
+      "localStorage": [
+        {
+          "name": "auth-token",
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5wcmFjdGljZXNvZnR3YXJldGVzdGluZy5jb20vdXNlcnMvbG9naW4iLCJpYXQiOjE3NTc2NTczOTMsImV4cCI6MTc1NzY1NzY5MywibmJmIjoxNzU3NjU3MzkzLCJqdGkiOiJrYTliRXJsTDM4Y0JGVnpBIiwic3ViIjoiMDFLNFk4NTRIR1ZWNTM0UkhNSDRWVlFWUlIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3Iiwicm9sZSI6InVzZXIifQ.uHblwNIL61ctlVKiu2f4pw2UL60ZauYjf_G827-b-yE"
+        }
+      ]
+    }
+  ]
+}
