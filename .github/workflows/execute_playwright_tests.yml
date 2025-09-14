@@ -8,6 +8,10 @@ jobs:
   test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    env:
+      # Workflow-level environment variable
+      TEST_ENV: "dev"
+      run: echo "Environment -- " >> $TEST_ENV
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -15,8 +19,8 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+    - name: Install Playwright Chromium Browser
+      run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
       run: npx playwright test tests/auth.setup.ts
     - uses: actions/upload-artifact@v4
