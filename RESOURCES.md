@@ -1,15 +1,22 @@
-https://practicesoftwaretesting.com
+# Resource for Project
 
+## Practice Sites & Credentials
+
+```text
+
+https://practicesoftwaretesting.com
 username: customer@practicesoftwaretesting.com
 password: welcome01
-==============================================
-https://binaryville.com
 
+https://binaryville.com
 username: test@example.com
 password: pass123
 
-=============================================
+https://opensource-demo.orangehrmlive.com/
+Username : Admin
+Password : admin123
 
+```
 
 Hydrating for the Nuxt App page load.
 Even though the UI is loaded in the page, they are not yet ready for action in Nuxt App:
@@ -21,6 +28,7 @@ await page.waitForFunction(
 ```
 
 ## Microsoft Playwright Testing (MPT)
+
 In Azure, subscribe to "Playwright Workspace" service.
 Create resource and workspace.
 Create a playwright Azure config file in your vscode.

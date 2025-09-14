@@ -19,7 +19,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test",
+    "test": "npx playwright test tests/auth.setup.ts",
     "test-headed": "npx playwright test --headed",
     "test-ui": "npx playwright test --ui",
     "test-report": "npx playwright show-report",

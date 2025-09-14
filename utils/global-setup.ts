@@ -3,13 +3,17 @@ import path from "path";
 
 async function globalSetup() {
   try {
-    console.log(process.env.ENV);
-    if (process.env.ENV) {
+    console.log(process.env.TEST_ENV);
+    if (process.env.TEST_ENV) {
       dotenv.config({
-        path: path.resolve(__dirname, "/config/environments/.env.${process.env.ENV}"),
+        path: path.resolve(
+          __dirname,
+          `/config/environments/.env.${process.env.TEST_ENV}`
+        ),
         override: true,
       });
     }
+    console.log(process.env.BASE_URL);
   } catch (error) {
     console.error("Error in loading environment variables", error);
   }
