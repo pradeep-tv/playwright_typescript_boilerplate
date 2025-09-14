@@ -36,7 +36,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'html',
-  reporter: [["html", { open: "never" }], ["list"]],
+  reporter: [["html", { open: "never" }], ["list"], ["github"]],
   // Glob patterns or regular expressions to ignore test files.
   // testIgnore: '*module_one',
   // Glob patterns or regular expressions that match test files.
@@ -56,7 +56,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     video: "retain-on-failure",
     screenshot: "only-on-failure",
-    headless: false,
+    headless: true,
     locale: "en-US", //en-US or de-DE
     viewport: null,
     // storageState: 'state.json', // Populates context with given storage state. state.json should be present in the root folder.
