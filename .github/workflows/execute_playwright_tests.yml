@@ -15,6 +15,25 @@ on:
           - dev
         required: true
         default: "dev"
+      TEST_TYPE:
+        description: "TestType"
+        type: choice
+        default: 'Smoke'
+        options:
+          - Smoke
+          - E2E
+          - Regression
+          - Extended
+          - Widget
+          - Execute_API_Test
+          - Verify_Response_Code
+      ALL_MODULES:
+        description: "All Modules"
+        type: boolean
+        default: false
+      SELECTED_MODULES:
+        description: "Multiple Modules"
+        default: '{"CPORT": "0", "CPAC": "0", "Service Cost": "0", "Cost Analysis": "0"}'
 jobs:
   test:
     timeout-minutes: 5

@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config({
   path: process.env.TEST_ENV
     ? `./config/environments/.env.${process.env.TEST_ENV}`
-    : "./config/environments/.env.dev",
+    : "./config/environments/.env.uat",
 });
 console.log(process.env.TEST_ENV);
 console.log(process.env.BASE_URL);
@@ -87,6 +87,8 @@ export default defineConfig({
       maxDiffPixelRatio: 0.1,
     },
   },
+
+  // grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
 
   /* Configure projects for major browsers */
   projects: [
