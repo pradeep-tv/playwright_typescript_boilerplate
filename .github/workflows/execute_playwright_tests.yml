@@ -6,14 +6,21 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
     inputs:
-      environment:
+      ENVIRONMENT:
         description: "Environment (dev/uat/prod)"
+        type: choice
+        options:
+          - prod
+          - uat
+          - dev
         required: true
         default: "dev"
 jobs:
   test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.50.0-noble # latest Playwright docker image
     env:
       # Workflow-level environment variable
       # TEST_ENV: "dev"
