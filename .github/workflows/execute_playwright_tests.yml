@@ -4,13 +4,21 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment (dev/uat/prod)"
+        required: true
+        default: "dev"
 jobs:
   test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     env:
       # Workflow-level environment variable
-      TEST_ENV: "dev"
+      # TEST_ENV: "dev"
+      TEST_ENV: ${{ github.event.inputs.environment }}
       run: echo "Environment -- " >> $TEST_ENV
     steps:
     - uses: actions/checkout@v4
