@@ -4,23 +4,38 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      ENVIRONMENT:
+        description: "Environment (dev/uat/prod)"
+        type: choice
+        options:
+          - prod
+          - uat
+          - dev
+        required: true
+        default: "dev"
 jobs:
   test:
     timeout-minutes: 5
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-noble # latest Playwright docker image
     env:
       # Workflow-level environment variable
-      TEST_ENV: "dev"
+      # TEST_ENV: "dev"
+      TEST_ENV: ${{ github.event.inputs.environment }}
       run: echo "Environment -- " >> $TEST_ENV
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
+    - name: Checkout Code
+      uses: actions/checkout@v4
+    # - uses: actions/setup-node@v4
+      # with:
+        # node-version: lts/*
     - name: Install dependencies
       run: npm ci
-    - name: Install Playwright Chromium Browser
-      run: npx playwright install chromium --with-deps
+    # - name: Install Playwright Chromium Browser
+      # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
       run: npx playwright test tests/auth.setup.ts
     - uses: actions/upload-artifact@v4
