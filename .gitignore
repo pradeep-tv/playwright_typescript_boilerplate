@@ -135,4 +135,5 @@ dist
 /blob-report/
 /playwright/.cache/
 .auth
+authStorageState.json
 

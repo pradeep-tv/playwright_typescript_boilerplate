@@ -4,9 +4,20 @@
 
 ```text
 
+prod
 https://practicesoftwaretesting.com
 username: customer@practicesoftwaretesting.com
 password: welcome01
+
+uat
+BASE_URL='https://v4.practicesoftwaretesting.com/'
+USERNAME=customer@practicesoftwaretesting.com
+PASSWORD=welcome01
+
+dev
+BASE_URL=https://with-bugs.practicesoftwaretesting.com/
+USERNAME=customer@practicesoftwaretesting.com
+PASSWORD=welcome01
 
 https://binaryville.com
 username: test@example.com
