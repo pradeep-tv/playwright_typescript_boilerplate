@@ -8,6 +8,9 @@ dotenv.config({
 });
 console.log(process.env.TEST_ENV);
 console.log(process.env.BASE_URL);
+console.log(process.env.TEST_TYPE);
+console.log(process.env.ALL_MODULES);
+console.log(process.env.SELECTED_MODULES);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -88,7 +91,10 @@ export default defineConfig({
     },
   },
 
-  // grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
+  // use grep to run specific tests by using @tagname in the test title.
+  //  Example: @smoke, @regression, @api, @ui, @module_one, @module_two
+  //  npx playwright test --grep @smoke
+  grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
 
   /* Configure projects for major browsers */
   projects: [

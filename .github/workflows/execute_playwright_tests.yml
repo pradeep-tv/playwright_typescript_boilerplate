@@ -43,8 +43,16 @@ jobs:
     env:
       # Workflow-level environment variable
       # TEST_ENV: "dev"
-      TEST_ENV: ${{ github.event.inputs.environment }}
-      run: echo "Environment -- " >> $TEST_ENV
+      TEST_ENV: ${{ github.event.inputs.ENVIRONMENT }}
+      TEST_TYPE: ${{ github.event.inputs.TEST_TYPE }}
+      ALL_MODULES: ${{ github.event.inputs.ALL_MODULES }}
+      SELECTED_MODULES: ${{ github.event.inputs.SELECTED_MODULES }}
+      run: |
+        echo "TEST_ENV : $TEST_ENV"
+        echo "TEST_TYPE : $TEST_TYPE"
+        echo "ALL_MODULES : $ALL_MODULES"
+        echo "SELECTED_MODULES : $SELECTED_MODULES"
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -56,7 +64,8 @@ jobs:
     # - name: Install Playwright Chromium Browser
       # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
-      run: npx playwright test tests/auth.setup.ts
+      # run: npx playwright test tests/auth.setup.ts
+      run: npm run test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
