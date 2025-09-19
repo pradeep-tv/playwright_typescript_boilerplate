@@ -59,7 +59,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     video: "retain-on-failure",
     screenshot: "only-on-failure",
-    headless: true,
+    headless: false,
     locale: "en-US", //en-US or de-DE
     viewport: null,
     // storageState: 'state.json', // Populates context with given storage state. state.json should be present in the root folder.
@@ -95,6 +95,8 @@ export default defineConfig({
   //  Example: @smoke, @regression, @api, @ui, @module_one, @module_two
   //  npx playwright test --grep @smoke
   grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
+
+  // grep: /PCT/,
 
   /* Configure projects for major browsers */
   projects: [

@@ -1,33 +1,11 @@
 {
   "cookies": [
     {
-      "name": "cf_clearance",
-      "value": "iBiHwRK509T1oXO2MOUUP.JYoyxbZksj85zYDbkJp0o-1757665269-1.2.1.1-j7IR1CraqsbfrrsWWUPvTI2x.ZGa4xQ1rgYosXvP8NHPC.3dukOxclwe4X_IhIyBNVmSmNL5QoPmiiaA6hfsQZssWFP96XLBvVuNWw9t1zWs9HY9FjBPDNJvhGrgL8tdXcOTg9wuQCPtC9V3oNL6uSqBnnUR.FaNIsbqhPSiHGt5GfKXs7VKCC7cxWfip3ULtk57tW1CQ9MXzxqONBN7QRit97EryKVyditNg1gWWs4",
-      "domain": ".practicesoftwaretesting.com",
+      "name": "session-username",
+      "value": "standard_user",
+      "domain": "www.saucedemo.com",
       "path": "/",
-      "expires": 1789201269.581246,
-      "httpOnly": true,
-      "secure": true,
-      "sameSite": "None",
-      "partitionKey": "https://practicesoftwaretesting.com",
-      "_crHasCrossSiteAncestor": false
-    },
-    {
-      "name": "_ga",
-      "value": "GA1.1.671202540.1757665270",
-      "domain": ".practicesoftwaretesting.com",
-      "path": "/",
-      "expires": 1792225271.995815,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
-    },
-    {
-      "name": "_ga_0BJFXRKTYC",
-      "value": "GS2.1.s1757665269$o1$g1$t1757665272$j57$l0$h0",
-      "domain": ".practicesoftwaretesting.com",
-      "path": "/",
-      "expires": 1792225272.049184,
+      "expires": 1758266985,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
@@ -35,11 +13,15 @@
   ],
   "origins": [
     {
-      "origin": "https://practicesoftwaretesting.com",
+      "origin": "https://www.saucedemo.com",
       "localStorage": [
         {
-          "name": "auth-token",
-          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5wcmFjdGljZXNvZnR3YXJldGVzdGluZy5jb20vdXNlcnMvbG9naW4iLCJpYXQiOjE3NTc2NjUyNzAsImV4cCI6MTc1NzY2NTU3MCwibmJmIjoxNzU3NjY1MjcwLCJqdGkiOiJobENqTjR6Z0ZEeDJjR2ZVIiwic3ViIjoiMDFLNFlGMFNQS1JUQlM2UE0xRlpZOVJIUjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3Iiwicm9sZSI6InVzZXIifQ.T9SCsDNFfCFEnjQnvxh32FROTpJxBfisnSJ0_5newPQ"
+          "name": "backtrace-guid",
+          "value": "4dd7d6dd-1903-4fb8-b1a4-1cf6c826c672"
+        },
+        {
+          "name": "backtrace-last-active",
+          "value": "1758266385610"
         }
       ]
     }

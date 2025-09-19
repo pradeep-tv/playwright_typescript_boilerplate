@@ -1,6 +1,6 @@
 import { test as setup, expect } from "@playwright/test";
 
-setup("Create customer 01 auth", async ({ page, context }) => {
+setup("Authenticate @Smoke", async ({ page, context }) => {
   // const email = "customer@practicesoftwaretesting.com";
   // const password = "welcome01";
   const userAuthFile = ".auth/authStorageState.json";
@@ -38,5 +38,13 @@ setup("Create customer 01 auth", async ({ page, context }) => {
     await page.getByTestId("login-button").click();
     await expect(page).toHaveURL("https://www.saucedemo.com/inventory.html");
   }
-  await context.storageState({ path: userAuthFile });
+  
+  const storageState = await page.context().storageState();
+  if (storageState.cookies.length > 0) {
+    console.log("Context storage state has content.");
+    await context.storageState({ path: userAuthFile });
+  } else {
+    console.log("Context storage state is empty.");
+  }
+  // await context.storageState({ path: userAuthFile });
 });

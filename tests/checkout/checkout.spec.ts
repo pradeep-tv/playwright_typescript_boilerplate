@@ -1,6 +1,6 @@
 import {test, expect} from '@playwright/test';
 
-test.describe("Checkout Flow", async() =>{
+test.describe("Checkout Flow @PCT", async() =>{
     test.use({storageState: '.auth/authStorageState.json'})
 
     test.beforeEach(async({page}) =>{
