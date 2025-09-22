@@ -6,11 +6,66 @@ dotenv.config({
     ? `./config/environments/.env.${process.env.TEST_ENV}`
     : "./config/environments/.env.uat",
 });
-console.log(process.env.TEST_ENV);
-console.log(process.env.BASE_URL);
-console.log(process.env.TEST_TYPE);
-console.log(process.env.ALL_MODULES);
-console.log(process.env.SELECTED_MODULES);
+console.log(`Test Environment: ${process.env.TEST_ENV}`);
+console.log(`Base URL: ${process.env.BASE_URL}`);
+
+const TEST_TYPE = process.env.TEST_TYPE || "Smoke";
+console.log(`Running Test Type : ${TEST_TYPE}`);
+
+const ALL_MODULES = process.env.ALL_MODULES || false;
+// const ALL_MODULES = process.env.ALL_MODULES || true;
+console.log(`All Modules selected: ${ALL_MODULES}`);
+
+// const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1"}';
+const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1", "CPAC": "1", "SRC": "1", "CA": "1"}';
+console.log(`Selected Modules: ${SELECTED_MODULES}`);
+
+// let modules_to_run = '';
+// if (ALL_MODULES === 'true') {
+//   const selectedModulesArray = SELECTED_MODULES.split(",").map((module) => module.trim());
+//   console.log('Selected Modules Array:', selectedModulesArray);
+//   const invalidModules = selectedModulesArray.filter((module) => !ALL_MODULES.includes(module));
+//   console.log('Invalid Modules:', invalidModules);
+//   if (invalidModules.length > 0) {
+//     console.error(`Invalid module names: ${invalidModules.join(", ")}`);
+//     process.exit(1);
+//   }
+//   modules_to_run = selectedModulesArray.join(",");
+// } else {
+//   modules_to_run = 'CPORT,CPAC,SRC,CA';
+// }
+
+// console.log(`Final Modules to run: ${modules_to_run}`);
+
+// Parse modules JSON
+let moduleFilters: string[] = [];
+try {
+  const modules = JSON.parse(SELECTED_MODULES);
+  moduleFilters = Object.entries(modules)
+    .filter(([_, val]) => val === '1')   // only modules set to "1"
+    .map(([key]) => `@${key}`);
+} catch (e) {
+  console.warn('Invalid SELECTED_MODULES JSON:', SELECTED_MODULES);
+}
+
+// Build grep regex
+let grep_group: RegExp | undefined;
+if (TEST_TYPE || moduleFilters.length > 0) {
+  const parts: string[] = [];
+
+  if (TEST_TYPE) {
+    parts.push(`@${TEST_TYPE}`);
+  }
+
+  if (!ALL_MODULES && moduleFilters.length > 0) {
+    parts.push(`(${moduleFilters.join('|')})`);
+  }
+
+  grep_group = new RegExp(parts.join('.*')); 
+  console.log(`Grep Regex: ${grep_group}`);
+  // ensures both conditions must match (AND)
+}
+
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -67,11 +122,11 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     launchOptions: {
       // headless: false,
-      slowMo: 50,
+      slowMo: process.env.CI ? 0 : 500,
       args: [
         "--start-maximized",
         "--window-size=1280,1080",
-        // '--window-position=3200,0',
+        '--window-position=3200,0',
       ],
     },
   },
@@ -94,7 +149,8 @@ export default defineConfig({
   // use grep to run specific tests by using @tagname in the test title.
   //  Example: @smoke, @regression, @api, @ui, @module_one, @module_two
   //  npx playwright test --grep @smoke
-  grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
+  // grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
+  grep: grep_group,
 
   // grep: /PCT/,
 

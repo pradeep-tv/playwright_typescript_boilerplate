@@ -21,19 +21,19 @@ on:
         default: 'Smoke'
         options:
           - Smoke
-          - E2E
-          - Regression
+          # - E2E
+          # - Regression
           - Extended
-          - Widget
-          - Execute_API_Test
-          - Verify_Response_Code
+          # - Widget
+          # - Execute_API_Test
+          # - Verify_Response_Code
       ALL_MODULES:
         description: "All Modules"
         type: boolean
         default: false
       SELECTED_MODULES:
         description: "Multiple Modules"
-        default: '{"CPORT": "0", "CPAC": "0", "Service Cost": "0", "Cost Analysis": "0"}'
+        default: '{"CPORT": "1", "CPAC": "0", "SRC": "0", "CA": "0"}'
 jobs:
   test:
     timeout-minutes: 5
@@ -47,12 +47,7 @@ jobs:
       TEST_TYPE: ${{ github.event.inputs.TEST_TYPE }}
       ALL_MODULES: ${{ github.event.inputs.ALL_MODULES }}
       SELECTED_MODULES: ${{ github.event.inputs.SELECTED_MODULES }}
-      run: |
-        echo "TEST_ENV : $TEST_ENV"
-        echo "TEST_TYPE : $TEST_TYPE"
-        echo "ALL_MODULES : $ALL_MODULES"
-        echo "SELECTED_MODULES : $SELECTED_MODULES"
-
+    
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -64,8 +59,14 @@ jobs:
     # - name: Install Playwright Chromium Browser
       # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
+      run: |
+        echo "TEST_ENV : ${{env.TEST_ENV}}"
+        echo "TEST_TYPE : ${{env.TEST_TYPE}}"
+        echo "ALL_MODULES : ${{env.ALL_MODULES}}"
+        echo "SELECTED_MODULES : ${{env.SELECTED_MODULES}}"
+        npm run test
       # run: npx playwright test tests/auth.setup.ts
-      run: npm run test
+        # npm run test
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

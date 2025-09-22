@@ -1,6 +1,6 @@
 import { test as setup, expect } from "@playwright/test";
 
-setup("Authenticate @Smoke", async ({ page, context }) => {
+setup("Authenticate",{tag: ['@Smoke', '@CPORT']}, async ({ page, context }) => {
   // const email = "customer@practicesoftwaretesting.com";
   // const password = "welcome01";
   const userAuthFile = ".auth/authStorageState.json";

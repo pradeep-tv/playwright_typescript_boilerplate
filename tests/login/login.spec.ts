@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import loginData from "./../..//test-data/loginData.json";
 import { log } from "console";
 
-test.describe("Login Tests @Smoke", async () => {
+test.describe("Login Tests",{tag: ['@Smoke', '@CPAC']}, async () => {
   loginData.forEach(({ email, password }) => {
     test(`Login Test with email: ${email} and password: ${password} @data`, async ({
       page,
