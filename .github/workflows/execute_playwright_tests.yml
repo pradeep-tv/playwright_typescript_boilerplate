@@ -41,17 +41,18 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.55.0-noble # latest Playwright docker image
     env:
+      id: configure-env
       # Workflow-level environment variable
       # TEST_ENV: "dev"
-      TEST_ENV: ${{ github.event.inputs.ENVIRONMENT }}
-      TEST_TYPE: ${{ github.event.inputs.TEST_TYPE }}
+      TEST_ENV: ${{ github.event.inputs.ENVIRONMENT || 'dev' }}
+      TEST_TYPE: ${{ github.event.inputs.TEST_TYPE || 'Smoke' }}
       ALL_MODULES: ${{ github.event.inputs.ALL_MODULES || false }}
       SELECTED_MODULES: ${{ github.event.inputs.SELECTED_MODULES }}
       run: |
         MODULES=CPORT,CPAC,SRC,CA
-        if [ '${{ inputs.ALL_MODULES }}' != 'true' ]; then
-          echo '${{ inputs.SELECTED_MODULES }}' > inputs.json
-          if [ '${{ inputs.ALL_MODULES }}' != 'true' ]; then
+        if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
+          echo '${{ github.event.inputs.SELECTED_MODULES }}' > inputs.json
+          if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
             SELECTED_MODULES=''
             for module in ${MODULES//,/ }; do
               value=$(jq ".${module}"  inputs.json -r)
@@ -78,7 +79,9 @@ jobs:
     # - name: Install Playwright Chromium Browser
       # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
+      id: playwright-tests
       run: |
+        echo "Running Playwright tests..."
         TIMESTAMP=$(date +'%Y-%m-%d-%H-%M')
         echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
         echo "TEST_ENV : ${{env.TEST_ENV}}"
