@@ -16,8 +16,8 @@ const ALL_MODULES = process.env.ALL_MODULES || false;
 // const ALL_MODULES = process.env.ALL_MODULES || true;
 console.log(`All Modules selected: ${ALL_MODULES}`);
 
-// const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1"}';
-const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1", "CPAC": "1", "SRC": "1", "CA": "1"}';
+const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1"}';
+// const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1", "CPAC": "1", "SRC": "1", "CA": "1"}';
 console.log(`Selected Modules: ${SELECTED_MODULES}`);
 
 // let modules_to_run = '';
@@ -114,7 +114,7 @@ export default defineConfig({
     ignoreHTTPSErrors: true,
     video: "retain-on-failure",
     screenshot: "only-on-failure",
-    headless: false,
+    headless: process.env.CI ? true : false,
     locale: "en-US", //en-US or de-DE
     viewport: null,
     // storageState: 'state.json', // Populates context with given storage state. state.json should be present in the root folder.
@@ -125,6 +125,7 @@ export default defineConfig({
       slowMo: process.env.CI ? 0 : 500,
       args: [
         "--start-maximized",
+        // "--start-fullscreen",
         "--window-size=1280,1080",
         '--window-position=3200,0',
       ],

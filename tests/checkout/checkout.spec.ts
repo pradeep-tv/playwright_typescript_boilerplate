@@ -1,13 +1,13 @@
 import {test, expect} from '@playwright/test';
 
-test.describe("Checkout Flow", async() =>{
+test.describe("Checkout Flow",{tag: ['@Smoke','@CPORT']}, async() =>{
     test.use({storageState: '.auth/authStorageState.json'})
 
     test.beforeEach(async({page}) =>{
         await page.goto("/", {waitUntil: 'commit'});
     });
 
-    test("Buy now Pay later", {tag: ['@Smoke','@SRC']}, async({page, headless}) =>{
+    test("Buy now Pay later", async({page}) =>{
         await page.locator('#vue-header').getByRole('link', { name: 'Shop', exact: true }).click();
         await page.getByRole('link', { name: 'Photo of It’s All 0’s and 1’s to Me! Apron, black It’s All 0’s and 1’s to Me!' }).click();
         await page.getByRole('button', { name: 'Add to cart' }).click();
