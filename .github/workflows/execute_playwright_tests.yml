@@ -45,8 +45,27 @@ jobs:
       # TEST_ENV: "dev"
       TEST_ENV: ${{ github.event.inputs.ENVIRONMENT }}
       TEST_TYPE: ${{ github.event.inputs.TEST_TYPE }}
-      ALL_MODULES: ${{ github.event.inputs.ALL_MODULES }}
+      ALL_MODULES: ${{ github.event.inputs.ALL_MODULES || false }}
       SELECTED_MODULES: ${{ github.event.inputs.SELECTED_MODULES }}
+      run: |
+        MODULES=CPORT,CPAC,SRC,CA
+        if [ '${{ inputs.ALL_MODULES }}' != 'true' ]; then
+          echo '${{ inputs.SELECTED_MODULES }}' > inputs.json
+          if [ '${{ inputs.ALL_MODULES }}' != 'true' ]; then
+            SELECTED_MODULES=''
+            for module in ${MODULES//,/ }; do
+              value=$(jq ".${module}"  inputs.json -r)
+              if [ "$value" == "1" ]; then
+                SELECTED_MODULES+="$module,"
+              fi
+            done
+            MODULES=${SELECTED_MODULES::-1}
+          fi
+        fi
+        echo "MODULES: $MODULES"
+        FEATURES=$(echo "${MODULES//,/$'OR'}")
+        echo "MODULES=${MODULES}" >> $GITHUB_OUTPUT
+        echo "FEATURES=${FEATURES}" >> $GITHUB_OUTPUT
     
     steps:
     - name: Checkout Code
@@ -60,6 +79,8 @@ jobs:
       # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
       run: |
+        TIMESTAMP=$(date +'%Y-%m-%d-%H-%M')
+        echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
         echo "TEST_ENV : ${{env.TEST_ENV}}"
         echo "TEST_TYPE : ${{env.TEST_TYPE}}"
         echo "ALL_MODULES : ${{env.ALL_MODULES}}"
