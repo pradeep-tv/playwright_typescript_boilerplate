@@ -18,22 +18,31 @@ on:
       TEST_TYPE:
         description: "TestType"
         type: choice
-        default: 'Smoke'
+        default: 'SMOKE'
         options:
-          - Smoke
-          # - E2E
-          # - Regression
-          - Extended
-          # - Widget
-          # - Execute_API_Test
-          # - Verify_Response_Code
-      ALL_MODULES:
-        description: "All Modules"
+          - SMOKE
+          - E2E
+          - VERIFICATION
+          - FIELDVALIDATION
+          - LOCALIZATION
+          - PRECONDITION
+      MODULE_TYPE:
+        description: "Projects"
+        type: choice
+        default: 'CPORT'
+        options:
+          - CPORT
+          - CPAC
+          - CONNECT_DESK
+      
+      ALL_SERVICES:
+        description: "All Services"
         type: boolean
         default: false
-      SELECTED_MODULES:
-        description: "Multiple Modules"
-        default: '{"CPORT": "1", "CPAC": "0", "SRC": "0", "CA": "0"}'
+      SELECTED_SERVICES:
+        description: "Multiple Services"
+        default: '{"cost_contract": "1", "drivers": "0", "precheck": "0", "safety": "0", "vehicles": "0"}'
+        
 jobs:
   test:
     timeout-minutes: 5
@@ -46,27 +55,28 @@ jobs:
       # TEST_ENV: "dev"
       TEST_ENV: ${{ github.event.inputs.ENVIRONMENT || 'dev' }}
       TEST_TYPE: ${{ github.event.inputs.TEST_TYPE || 'Smoke' }}
-      ALL_MODULES: ${{ github.event.inputs.ALL_MODULES || false }}
-      SELECTED_MODULES: ${{ github.event.inputs.SELECTED_MODULES }}
-      run: |
-        MODULES=CPORT,CPAC,SRC,CA
-        if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
-          echo '${{ github.event.inputs.SELECTED_MODULES }}' > inputs.json
-          if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
-            SELECTED_MODULES=''
-            for module in ${MODULES//,/ }; do
-              value=$(jq ".${module}"  inputs.json -r)
-              if [ "$value" == "1" ]; then
-                SELECTED_MODULES+="$module,"
-              fi
-            done
-            MODULES=${SELECTED_MODULES::-1}
-          fi
-        fi
-        echo "MODULES: $MODULES"
-        FEATURES=$(echo "${MODULES//,/$'OR'}")
-        echo "MODULES=${MODULES}" >> $GITHUB_OUTPUT
-        echo "FEATURES=${FEATURES}" >> $GITHUB_OUTPUT
+      MODULE_TYPE: ${{ github.event.inputs.MODULE_TYPE || false }}
+      ALL_SERVICES: ${{ github.event.inputs.ALL_SERVICES || false }}
+      SELECTED_SERVICES: ${{ github.event.inputs.SELECTED_SERVICES }}
+      # run: |
+      #   MODULES=CPORT,CPAC,SRC,CA
+      #   if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
+      #     echo '${{ github.event.inputs.SELECTED_MODULES }}' > inputs.json
+      #     if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
+      #       SELECTED_MODULES=''
+      #       for module in ${MODULES//,/ }; do
+      #         value=$(jq ".${module}"  inputs.json -r)
+      #         if [ "$value" == "1" ]; then
+      #           SELECTED_MODULES+="$module,"
+      #         fi
+      #       done
+      #       MODULES=${SELECTED_MODULES::-1}
+      #     fi
+      #   fi
+      #   echo "MODULES: $MODULES"
+      #   FEATURES=$(echo "${MODULES//,/$'OR'}")
+      #   echo "MODULES=${MODULES}" >> $GITHUB_OUTPUT
+      #   echo "FEATURES=${FEATURES}" >> $GITHUB_OUTPUT
     
     steps:
     - name: Checkout Code
@@ -86,11 +96,11 @@ jobs:
         echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
         echo "TEST_ENV : ${{env.TEST_ENV}}"
         echo "TEST_TYPE : ${{env.TEST_TYPE}}"
-        echo "ALL_MODULES : ${{env.ALL_MODULES}}"
-        echo "SELECTED_MODULES : ${{env.SELECTED_MODULES}}"
-        npm run test
-      # run: npx playwright test tests/auth.setup.ts
-        # npm run test
+        echo "MODULE_TYPE : ${{env.MODULE_TYPE}}"
+        echo "ALL_SERVICES : ${{env.ALL_SERVICES}}"
+        echo "SELECTED_SERVICES : ${{env.SELECTED_SERVICES}}"
+        
+        npx playwright test `${env.MODULE_TYPE}`
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:

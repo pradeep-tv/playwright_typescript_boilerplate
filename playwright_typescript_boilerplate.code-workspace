@@ -7,7 +7,6 @@
 	"settings": {
 		"playwright.env": {
 			"PWDEBUG": "1"
-		},
-		
+		},	
 	}
 }
