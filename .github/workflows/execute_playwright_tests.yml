@@ -117,6 +117,7 @@ jobs:
         fi
         echo "RUN_PATH = $RUN_PATH"
         # Execute Playwright with dynamic path
+        echo "RUN_PATH resolved to: $RUN_PATH"
         npx playwright test $RUN_PATH
 
       # npx playwright test `${env.MODULE_TYPE}`
