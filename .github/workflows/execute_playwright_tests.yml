@@ -53,9 +53,9 @@ jobs:
       id: configure-env
       # Workflow-level environment variable
       # TEST_ENV: "dev"
-      TEST_ENV: ${{ github.event.inputs.ENVIRONMENT || 'dev' }}
-      TEST_TYPE: ${{ github.event.inputs.TEST_TYPE || 'Smoke' }}
-      MODULE_TYPE: ${{ github.event.inputs.MODULE_TYPE || false }}
+      TEST_ENV: ${{ github.event.inputs.ENVIRONMENT || 'prod' }}
+      TEST_TYPE: ${{ github.event.inputs.TEST_TYPE || 'SMOKE' }}
+      MODULE_TYPE: ${{ github.event.inputs.MODULE_TYPE || 'CPORT' }}
       ALL_SERVICES: ${{ github.event.inputs.ALL_SERVICES || false }}
       SELECTED_SERVICES: ${{ github.event.inputs.SELECTED_SERVICES }}
       # run: |
@@ -105,6 +105,7 @@ jobs:
         if [[ "$MODULE_TYPE" == "CPORT" ]]; then
           # Extract keys with value "1"
           SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
+          echo "SERVICES resolved to: $SERVICES"
           if [[ -z "$SERVICES" ]]; then
             RUN_PATH="$MODULE_TYPE"
           else
