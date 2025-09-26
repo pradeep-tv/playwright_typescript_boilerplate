@@ -103,6 +103,7 @@ jobs:
         # Determine run path
         RUN_PATH=""
         MODULE_TYPE=$(echo "$MODULE_TYPE" | xargs)
+        echo "MODULE_TYPE After = $MODULE_TYPE"
         if [[ "$MODULE_TYPE" == "CPORT" ]]; then
         
           echo "DEBUG: Parsing SELECTED_SERVICES JSON..."
