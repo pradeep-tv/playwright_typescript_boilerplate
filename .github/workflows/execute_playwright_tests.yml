@@ -103,10 +103,15 @@ jobs:
         # Determine run path
         RUN_PATH=""
         if [[ "$MODULE_TYPE" == "CPORT" ]]; then
+        
+          echo "DEBUG: Parsing SELECTED_SERVICES JSON..."
+          echo "$SELECTED_SERVICES" | jq .
+          
           # Extract keys with value "1"
           SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
-          echo "SERVICES resolved to: $SERVICES"
+          echo "👉 SERVICES raw value: '$SERVICES'"
           if [[ -z "$SERVICES" ]]; then
+            echo "⚠️ No services selected, falling back to MODULE_TYPE"
             RUN_PATH="$MODULE_TYPE"
           else
             for service in $SERVICES; do
