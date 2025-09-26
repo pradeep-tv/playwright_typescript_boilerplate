@@ -100,7 +100,26 @@ jobs:
         echo "ALL_SERVICES : ${{env.ALL_SERVICES}}"
         echo "SELECTED_SERVICES : ${{env.SELECTED_SERVICES}}"
         
-        npx playwright test `${env.MODULE_TYPE}`
+        # Determine run path
+        RUN_PATH=""
+        if [[ "$MODULE_TYPE" == "CPORT" ]]; then
+          # Extract keys with value "1"
+          SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
+          if [[ -z "$SERVICES" ]]; then
+            RUN_PATH="$MODULE_TYPE"
+          else
+            for service in $SERVICES; do
+              RUN_PATH="$RUN_PATH $MODULE_TYPE/$service"
+            done
+          fi
+        else
+          RUN_PATH="$MODULE_TYPE"
+        fi
+        echo "RUN_PATH = $RUN_PATH"
+        # Execute Playwright with dynamic path
+        npx playwright test $RUN_PATH
+
+      # npx playwright test `${env.MODULE_TYPE}`
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
