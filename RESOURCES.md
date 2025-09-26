@@ -46,3 +46,34 @@ Create a playwright Azure config file in your vscode.
 `npm init @azure/playwright` check for correntness
 
 refer the documentation and work on it
+
+
+Tags Used
+----------------
+
+
+
+
+TEST_TYPE
+============
+SMOKE
+E2E
+VERIFICATION
+FIELDVALIDATION
+LOCALIZATION
+PRECONDITION
+
+MODULE
+=============
+CD
+CPORT
+CPAC
+
+COST
+SFTY
+VEH
+DRI
+PRE
+
+
+npx playwright test CPORT/COST

@@ -9,63 +9,12 @@ dotenv.config({
 console.log(`Test Environment: ${process.env.TEST_ENV}`);
 console.log(`Base URL: ${process.env.BASE_URL}`);
 
-const TEST_TYPE = process.env.TEST_TYPE || "Smoke";
+const TEST_TYPE = process.env.TEST_TYPE || "E2E";
 console.log(`Running Test Type : ${TEST_TYPE}`);
 
-const ALL_MODULES = process.env.ALL_MODULES || false;
-// const ALL_MODULES = process.env.ALL_MODULES || true;
-console.log(`All Modules selected: ${ALL_MODULES}`);
-
-const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1"}';
-// const SELECTED_MODULES = process.env.SELECTED_MODULES || '{"CPORT": "1", "CPAC": "1", "SRC": "1", "CA": "1"}';
-console.log(`Selected Modules: ${SELECTED_MODULES}`);
-
-// let modules_to_run = '';
-// if (ALL_MODULES === 'true') {
-//   const selectedModulesArray = SELECTED_MODULES.split(",").map((module) => module.trim());
-//   console.log('Selected Modules Array:', selectedModulesArray);
-//   const invalidModules = selectedModulesArray.filter((module) => !ALL_MODULES.includes(module));
-//   console.log('Invalid Modules:', invalidModules);
-//   if (invalidModules.length > 0) {
-//     console.error(`Invalid module names: ${invalidModules.join(", ")}`);
-//     process.exit(1);
-//   }
-//   modules_to_run = selectedModulesArray.join(",");
-// } else {
-//   modules_to_run = 'CPORT,CPAC,SRC,CA';
-// }
-
-// console.log(`Final Modules to run: ${modules_to_run}`);
-
-// Parse modules JSON
-let moduleFilters: string[] = [];
-try {
-  const modules = JSON.parse(SELECTED_MODULES);
-  moduleFilters = Object.entries(modules)
-    .filter(([_, val]) => val === '1')   // only modules set to "1"
-    .map(([key]) => `@${key}`);
-} catch (e) {
-  console.warn('Invalid SELECTED_MODULES JSON:', SELECTED_MODULES);
-}
-
-// Build grep regex
 let grep_group: RegExp | undefined;
-if (TEST_TYPE || moduleFilters.length > 0) {
-  const parts: string[] = [];
-
-  if (TEST_TYPE) {
-    parts.push(`@${TEST_TYPE}`);
-  }
-
-  if (!ALL_MODULES && moduleFilters.length > 0) {
-    parts.push(`(${moduleFilters.join('|')})`);
-  }
-
-  grep_group = new RegExp(parts.join('.*')); 
-  console.log(`Grep Regex: ${grep_group}`);
-  // ensures both conditions must match (AND)
-}
-
+grep_group = TEST_TYPE ? new RegExp(`@${TEST_TYPE}`) : undefined;
+console.log(`Grep Regex generated is : ${grep_group}`);
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -77,7 +26,15 @@ export default defineConfig({
   timeout: 30_000, // 30 seconds
   globalTimeout: 10 * 60 * 1000, // 10 minutes
   // Directory for test files
-  testDir: "./tests",
+  // testDir: "./tests",
+  testDir: "./",
+  // testDir: "['./tests', './cpac', './cport', './connect_desk']",
+  // testMatch: [
+  //   '**/tests/**/*.*.ts',
+  //   '**/cpac/**/*.*.ts', 
+  //   '**/cport/**/*.*.ts',
+  //   '**/connect_desk/**/*.*.ts'
+  // ],
   // Folder for test artifacts such as screenshots, videos, traces, etc.
   outputDir: "test-results",
   // path to the global setup files.
@@ -91,7 +48,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'html',
   reporter: [["html", { open: "never" }], ["list"], ["github"]],
