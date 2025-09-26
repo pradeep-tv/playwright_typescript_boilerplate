@@ -9,7 +9,7 @@ dotenv.config({
 console.log(`Test Environment: ${process.env.TEST_ENV}`);
 console.log(`Base URL: ${process.env.BASE_URL}`);
 
-const TEST_TYPE = process.env.TEST_TYPE || "E2E";
+const TEST_TYPE = process.env.TEST_TYPE || "SMOKE";
 console.log(`Running Test Type : ${TEST_TYPE}`);
 
 let grep_group: RegExp | undefined;
