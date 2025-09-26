@@ -94,11 +94,24 @@ jobs:
         echo "Running Playwright tests..."
         TIMESTAMP=$(date +'%Y-%m-%d-%H-%M')
         echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_OUTPUT
-        echo "TEST_ENV : ${{env.TEST_ENV}}"
-        echo "TEST_TYPE : ${{env.TEST_TYPE}}"
-        echo "MODULE_TYPE : ${{env.MODULE_TYPE}}"
-        echo "ALL_SERVICES : ${{env.ALL_SERVICES}}"
-        echo "SELECTED_SERVICES : ${{env.SELECTED_SERVICES}}"
+
+        TEST_ENV="${{ env.TEST_ENV }}"
+        TEST_TYPE="${{ env.TEST_TYPE }}"
+        MODULE_TYPE="${{ env.MODULE_TYPE }}"
+        ALL_SERVICES="${{ env.ALL_SERVICES }}"
+        SELECTED_SERVICES='${{ env.SELECTED_SERVICES }}'
+ 
+        echo "TEST_ENV : $TEST_ENV"
+        echo "TEST_TYPE : $TEST_TYPE"
+        echo "MODULE_TYPE : $MODULE_TYPE"
+        echo "ALL_SERVICES : $ALL_SERVICES"
+        echo "SELECTED_SERVICES : $SELECTED_SERVICES"
+        
+        # echo "TEST_ENV : ${{env.TEST_ENV}}"
+        # echo "TEST_TYPE : ${{env.TEST_TYPE}}"
+        # echo "MODULE_TYPE : ${{env.MODULE_TYPE}}"
+        # echo "ALL_SERVICES : ${{env.ALL_SERVICES}}"
+        # echo "SELECTED_SERVICES : ${{env.SELECTED_SERVICES}}"
         
         # Determine run path
         RUN_PATH=""
