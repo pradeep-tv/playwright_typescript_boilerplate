@@ -90,7 +90,6 @@ jobs:
       # run: npx playwright install chromium --with-deps
     - name: Run Playwright tests
       id: playwright-tests
-      shell: bash   # <--- Force bash
       run: |
         echo "Running Playwright tests..."
         TIMESTAMP=$(date +'%Y-%m-%d-%H-%M')
@@ -118,7 +117,7 @@ jobs:
         RUN_PATH=""
         MODULE_TYPE=$(echo "$MODULE_TYPE" | xargs)
         echo "MODULE_TYPE After = $MODULE_TYPE"
-        if [[ "$MODULE_TYPE" == "CPORT" ]]; then
+        if [ "$MODULE_TYPE" == "CPORT" ]; then
         
           echo "DEBUG: Parsing SELECTED_SERVICES JSON..."
           echo "$SELECTED_SERVICES" | jq .
@@ -126,7 +125,7 @@ jobs:
           # Extract keys with value "1"
           SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
           echo "👉 SERVICES raw value: '$SERVICES'"
-          if [[ -z "$SERVICES" ]]; then
+          if [ -z "$SERVICES" ]; then
             echo "⚠️ No services selected, falling back to MODULE_TYPE"
             RUN_PATH="$MODULE_TYPE"
           else
