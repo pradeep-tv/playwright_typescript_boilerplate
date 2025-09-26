@@ -14,7 +14,7 @@ on:
           - uat
           - dev
         required: true
-        default: "dev"
+        default: "prod"
       TEST_TYPE:
         description: "TestType"
         type: choice
@@ -41,7 +41,7 @@ on:
         default: false
       SELECTED_SERVICES:
         description: "Multiple Services"
-        default: '{"cost_contract": "1", "drivers": "0", "precheck": "0", "safety": "0", "vehicles": "0"}'
+        default: '{"cost_contract": "1", "drivers": "1", "precheck": "0", "safety": "0", "vehicles": "0"}'
         
 jobs:
   test:
@@ -102,6 +102,7 @@ jobs:
         
         # Determine run path
         RUN_PATH=""
+        MODULE_TYPE=$(echo "$MODULE_TYPE" | xargs)
         if [[ "$MODULE_TYPE" == "CPORT" ]]; then
         
           echo "DEBUG: Parsing SELECTED_SERVICES JSON..."
