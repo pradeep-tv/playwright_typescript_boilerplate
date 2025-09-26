@@ -88,6 +88,9 @@ jobs:
       run: npm ci
     # - name: Install Playwright Chromium Browser
       # run: npx playwright install chromium --with-deps
+    - name: Install jq
+      run: apt-get update && apt-get install -y jq
+      
     - name: Run Playwright tests
       id: playwright-tests
       run: |
