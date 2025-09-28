@@ -134,31 +134,7 @@ jobs:
         
         # Execute Playwright with dynamic path
         npx playwright test $RUN_PATH
-
-        # # Determine run path
-        # RUN_PATH=""
-        # MODULE_TYPE=$(echo "$MODULE_TYPE" | xargs)
-
-        # if [ "$MODULE_TYPE" = "CPORT" ]; then
-        #   echo "$SELECTED_SERVICES" | jq .          
-        #   # Extract keys with value "1"
-        #   SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
-
-        #   if [ -z "$SERVICES" ]; then
-        #     echo "⚠️ No services selected, falling back to MODULE_TYPE"
-        #     RUN_PATH="$MODULE_TYPE"
-        #   else
-        #     for service in $SERVICES; do
-        #       RUN_PATH="$RUN_PATH $MODULE_TYPE/tests/$service"
-        #     done
-        #   fi
-        # else
-        #   RUN_PATH="$MODULE_TYPE"
-        # fi
-        # echo "RUN_PATH = $RUN_PATH"
-        # # Execute Playwright with dynamic path
-        # npx playwright test $RUN_PATH
-
+        
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
