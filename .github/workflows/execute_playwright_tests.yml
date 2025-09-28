@@ -1,9 +1,5 @@
 name: Playwright Tests
 on:
-  # push:
-  #   branches: [ main, master ]
-  # pull_request:
-  #   branches: [ main, master ]
   workflow_dispatch:
     inputs:
       ENVIRONMENT:
@@ -53,42 +49,19 @@ jobs:
     env:
       id: configure-env
       # Workflow-level environment variable
-      # TEST_ENV: "dev"
       TEST_ENV: ${{ github.event.inputs.ENVIRONMENT || 'prod' }}
       TEST_TYPE: ${{ github.event.inputs.TEST_TYPE || 'SMOKE' }}
       MODULE_TYPE: ${{ github.event.inputs.MODULE_TYPE || 'CPORT' }}
       ALL_SERVICES: ${{ github.event.inputs.ALL_SERVICES || false }}
       SELECTED_SERVICES: ${{ github.event.inputs.SELECTED_SERVICES }}
-      # run: |
-      #   MODULES=CPORT,CPAC,SRC,CA
-      #   if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
-      #     echo '${{ github.event.inputs.SELECTED_MODULES }}' > inputs.json
-      #     if [ '${{ github.event.inputs.ALL_MODULES }}' != 'true' ]; then
-      #       SELECTED_MODULES=''
-      #       for module in ${MODULES//,/ }; do
-      #         value=$(jq ".${module}"  inputs.json -r)
-      #         if [ "$value" == "1" ]; then
-      #           SELECTED_MODULES+="$module,"
-      #         fi
-      #       done
-      #       MODULES=${SELECTED_MODULES::-1}
-      #     fi
-      #   fi
-      #   echo "MODULES: $MODULES"
-      #   FEATURES=$(echo "${MODULES//,/$'OR'}")
-      #   echo "MODULES=${MODULES}" >> $GITHUB_OUTPUT
-      #   echo "FEATURES=${FEATURES}" >> $GITHUB_OUTPUT
     
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
-    # - uses: actions/setup-node@v4
-      # with:
-        # node-version: lts/*
+
     - name: Install dependencies
       run: npm ci
-    # - name: Install Playwright Chromium Browser
-      # run: npx playwright install chromium --with-deps
+
     - name: Install jq
       run: apt-get update && apt-get install -y jq
       
@@ -111,24 +84,15 @@ jobs:
         echo "ALL_SERVICES : $ALL_SERVICES"
         echo "SELECTED_SERVICES : $SELECTED_SERVICES"
         
-        # echo "TEST_ENV : ${{env.TEST_ENV}}"
-        # echo "TEST_TYPE : ${{env.TEST_TYPE}}"
-        # echo "MODULE_TYPE : ${{env.MODULE_TYPE}}"
-        # echo "ALL_SERVICES : ${{env.ALL_SERVICES}}"
-        # echo "SELECTED_SERVICES : ${{env.SELECTED_SERVICES}}"
-        
         # Determine run path
         RUN_PATH=""
         MODULE_TYPE=$(echo "$MODULE_TYPE" | xargs)
-        echo "MODULE_TYPE After = $MODULE_TYPE"
+
         if [ "$MODULE_TYPE" = "CPORT" ]; then
-        
-          echo "DEBUG: Parsing SELECTED_SERVICES JSON..."
-          echo "$SELECTED_SERVICES" | jq .
-          
+          echo "$SELECTED_SERVICES" | jq .          
           # Extract keys with value "1"
           SERVICES=$(echo $SELECTED_SERVICES | jq -r 'to_entries | map(select(.value=="1")) | .[].key')
-          echo "👉 SERVICES raw value: '$SERVICES'"
+
           if [ -z "$SERVICES" ]; then
             echo "⚠️ No services selected, falling back to MODULE_TYPE"
             RUN_PATH="$MODULE_TYPE"
@@ -142,10 +106,8 @@ jobs:
         fi
         echo "RUN_PATH = $RUN_PATH"
         # Execute Playwright with dynamic path
-        echo "RUN_PATH resolved to: $RUN_PATH"
         npx playwright test $RUN_PATH
 
-      # npx playwright test `${env.MODULE_TYPE}`
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
