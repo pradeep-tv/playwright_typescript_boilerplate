@@ -1,21 +1,35 @@
 import { defineConfig, devices } from "@playwright/test";
 import dotenv from "dotenv";
 
+
+const TEST_ENV = process.env.TEST_ENV || "uat";
+const TEST_TYPE = process.env.TEST_TYPE || "SMOKE";
+
 dotenv.config({
-  path: process.env.TEST_ENV
-    ? `./config/environments/.env.${process.env.TEST_ENV}`
-    : "./config/environments/.env.uat",
+  path: `./config/environments/.env.${TEST_ENV}`,
 });
-console.log(`Test Environment: ${process.env.TEST_ENV}`);
+
+console.log(`Test Environment: ${TEST_ENV}`);
+console.log(`Running Test Type : ${TEST_TYPE}`);
 console.log(`Base URL: ${process.env.BASE_URL}`);
 
-const TEST_TYPE = process.env.TEST_TYPE || "SMOKE";
-console.log(`Running Test Type : ${TEST_TYPE}`);
 
-let grep_group: RegExp | undefined;
-grep_group = TEST_TYPE ? new RegExp(`@${TEST_TYPE}`) : undefined;
-console.log(`Grep Regex generated is : ${grep_group}`);
+// ----------------------------
+// Grep logic
+// ----------------------------
+let grep: RegExp | undefined = TEST_TYPE ? new RegExp(`@${TEST_TYPE}`) : undefined;
+let grepInvert: RegExp | undefined = undefined;
 
+// Exclude NON_PROD-tagged tests when running in PROD
+if ((TEST_ENV || "").toLowerCase() === "prod") {
+  grepInvert = /@NON_PROD/;
+}
+
+console.log(`Grep Regex generated is : ${grep}`);
+console.log(`GrepInvert Regex generated is : ${grepInvert}`);
+
+
+// ----------------------------
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -108,7 +122,10 @@ export default defineConfig({
   //  Example: @smoke, @regression, @api, @ui, @module_one, @module_two
   //  npx playwright test --grep @smoke
   // grep: process.env.TEST_TYPE ? new RegExp(`@${process.env.TEST_TYPE.toLowerCase()}`, 'i') : undefined,
-  grep: grep_group,
+
+  // Filtering logic
+  grep,
+  grepInvert,
 
   // grep: /PCT/,
 
